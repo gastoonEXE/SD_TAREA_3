@@ -44,11 +44,12 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
 
                     if (personaDAO.loginUsuario(username, password)) {
                     	System.out.println("\nUsuario " + username + " conectado");
-                        out.println("\nUsuario " + username + " conectado.");
+                        out.println("Usuario " + username + " conectado.");
                         servidor.usuarios.add(username);
                         personaDAO.conectarUsuario(username, true); 	// Marca al usuario como conectado
                     } else {
                         out.println("Error al iniciar sesion. No existe el usuario.");
+                        out.println("error");
                     }
                 } else if (inputLine.equals("LOGOUT")) {				//COMANDO LOGOUT
                    
@@ -95,16 +96,21 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
                     out.println("error");
                 }
             }
-            
-            
-            
             out.close();
             in.close();
-            socket.close();
-            System.out.println("Finalizando Hilo");
-            
         } catch (IOException e) {
-            e.printStackTrace();
+            personaDAO.conectarUsuario(username, false); 	// Marca al usuario como desconectado
+            servidor.usuarios.remove(username);
+            System.out.println("Usuario desconectado: " + username);
+            
+            // e.printStackTrace();
+        } finally {
+            try {
+                socket.close();
+                System.out.println("Finalizando Hilo");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }
