@@ -58,10 +58,14 @@ public class TCPClient {
                 out.println("LOGIN:" + username + ":" + password); // Enviar el login
 
                 fromServer = in.readLine(); // Esperar respuesta del servidor
-                System.out.println("Servidor: Sesion iniciada" + fromServer);
-
+                
                 if (fromServer.contains("conectado.")) {
-                    break; // El bucle termina si el cleinte ingresa exitosamente
+                    System.out.println("Servidor: Sesion iniciada " + fromServer);
+                    continue; // El bucle termina si el cleinte ingresa exitosamente
+                } else {
+                    username = ""; // Reiniciar el nombre de usuario al fallar el inicio de sesión
+                    password = "";
+                    System.out.println("Servidor: " + fromServer);
                 }
 
             } else if (fromUser.equals("SIGNIN")) {
@@ -101,7 +105,7 @@ public class TCPClient {
             //System.out.println("Servidor: " + fromServer);
             
             // Repuesta del servidor
-            if (fromServer.contains("conectado.")) {
+            if (fromServer.contains("conectado.") && !fromServer.contains("desconectado.")) {
                 // Conexion de usuario
                 continue; // El bucle continuará y mostrará el menú correcto
             } else if (fromServer.contains("registrado")) {

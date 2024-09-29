@@ -38,6 +38,7 @@ public class TCPMultiServer {
     }
     
     public static void main(String[] args) throws IOException {
+        PersonaDAO.desconectarUsuarios(); //se desconectan todos los usuarios al iniciar el servidor
     	TCPMultiServer tms = new TCPMultiServer();  //Se inicializa servidor
         tms.hilosClientes = new ArrayList<>();	//se inicializa la lista de hilosClientes
         tms.usuarios = new ArrayList<>();  //Se inicializa lista de usuarios conectados 
