@@ -97,12 +97,11 @@ public class TCPClient {
             } else {
             	out.println("cualquiera");
                 System.out.println("\n---Error. Por favor, ingrese una opcion correcta---");
-                //fromServer = in.readLine(); // Espera la respuesta del servidor
-                //System.out.println("Servidor: " + fromServer);
+                
             }
          
             fromServer = in.readLine();			// Espera y lee respuesta del servidor
-            //System.out.println("Servidor: " + fromServer);
+            
             
             // Repuesta del servidor
             if (fromServer.contains("conectado.") && !fromServer.contains("desconectado.")) {

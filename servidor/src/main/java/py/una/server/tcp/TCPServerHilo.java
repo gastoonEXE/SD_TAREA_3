@@ -36,11 +36,8 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
             while ((inputLine = in.readLine()) != null) {   	//vemos si hay usuarios conectados
                 if (inputLine.startsWith("LOGIN:")) {			//COMANDO LOGIN
                     String[] partes = inputLine.split(":");
-                    //System.out.println("inputLine: "+inputLine);
                     username = partes[1];
-                    //System.out.println("username: "+username);
                     String password = partes[2];
-                    //System.out.println("password: "+password);
 
                     if (personaDAO.loginUsuario(username, password)) {
                     	System.out.println("\nUsuario " + username + " conectado");
@@ -62,7 +59,7 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
                         out.println("Usuarios conectados: 0");
                     }
                 	
-                    //break;
+                   
                 } else if (inputLine.startsWith("SIGNIN:")) {		//COMANDO SIGNIN
                     String[] partes = inputLine.split(":");
                     String newUsername = partes[1];

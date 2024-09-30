@@ -17,7 +17,7 @@ public class TCPMultiServer {
     
     
     public void ejecutar() throws IOException {
-        ServerSocket serverSocket = null;
+        ServerSocket serverSocket = null;   //se inicializa el socket del servidor en null
 
         try {
             serverSocket = new ServerSocket(4444);  //se crea un socket para escuchar peticiones en el puerto 4444
@@ -25,18 +25,22 @@ public class TCPMultiServer {
             System.err.println("No se puede abrir el puerto: 4444.");
             System.exit(1);
         }
+        //El puerto se muestra en el servidor
         System.out.println("Puerto abierto: 4444.");
 
         //mientras este escuchando, los clientes se conectan y crean nuevos hilos para iniciar
         while (listening) {
             TCPServerHilo hilo = new TCPServerHilo(serverSocket.accept(), this);
-            hilosClientes.add(hilo);
+            hilosClientes.add(hilo);    //se agreaga el hilo a la lista de hilos creada
             hilo.start();	//con start corremos el run que esta en TCPServerHilo()
         }
 
+        //Se cierra socket de servidor al salir del bucle
         serverSocket.close();
     }
     
+    //Al iniciar el servidor, no hay ningun usuario conectado
+    //Se instancia TCPMultiServer para correr programa
     public static void main(String[] args) throws IOException {
         PersonaDAO.desconectarUsuarios(); //se desconectan todos los usuarios al iniciar el servidor
     	TCPMultiServer tms = new TCPMultiServer();  //Se inicializa servidor
@@ -47,5 +51,5 @@ public class TCPMultiServer {
     }
 }
 
-//ESTE ESTA BIEN
+
 
