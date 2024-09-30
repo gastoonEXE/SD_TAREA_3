@@ -80,7 +80,6 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
                 	List<String> usuariosConectados = personaDAO.listarUsuariosConectados();
                 	if (usuariosConectados.isEmpty()) {
                         out.println("Usuarios conectados: 0");
-                        out.println("error");
                     } else {
                         out.println("Usuarios conectados: " + String.join(", ", usuariosConectados));
                     }

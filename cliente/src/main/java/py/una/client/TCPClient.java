@@ -50,7 +50,7 @@ public class TCPClient {
             }
             fromUser = stdIn.readLine();
             
-            if (fromUser.equals("LOGIN")) {
+            if (fromUser.equals("LOGIN") && username == "") {
                 System.out.println("Ingrese su nombre de usuario: ");
                 username = stdIn.readLine(); // Se asigna nombre a username
                 System.out.println("Ingrese su contraseña: ");
@@ -68,7 +68,7 @@ public class TCPClient {
                     System.out.println("Servidor: " + fromServer);
                 }
 
-            } else if (fromUser.equals("SIGNIN")) {
+            } else if (fromUser.equals("SIGNIN") && username == "") {
                 System.out.println("Ingrese un nuevo nombre de usuario: ");
                 username = stdIn.readLine(); 
                 System.out.println("Ingrese una nueva contraseña: ");
@@ -79,7 +79,7 @@ public class TCPClient {
                 System.out.println("Servidor: " + fromServer);
                 username = "";
                 password = "";
-            }  else if (fromUser.equals("LOGOUT")) {
+            }  else if (fromUser.equals("LOGOUT")  && username != "") {
                 out.println("LOGOUT");
                 username = ""; // Reiniciar el nombre de usuario al cerrar sesión, cuando el usuario no esta conectado
             
@@ -89,7 +89,7 @@ public class TCPClient {
                 out.println("LISTA_USUARIOS");
                 fromServer = in.readLine(); // Espera la respuesta del servidor
                 System.out.println("Servidor: " + fromServer);
-            } else if (fromUser.equals("TERMINAR PROCESO")) {
+            } else if (fromUser.equals("TERMINAR PROCESO") && username == "") {
             	out.println("TERMINAR PROCESO");
             	flag = false;
             	
