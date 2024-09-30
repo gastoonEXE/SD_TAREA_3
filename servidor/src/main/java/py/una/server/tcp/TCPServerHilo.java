@@ -16,9 +16,9 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
 
     public TCPServerHilo(Socket socket, TCPMultiServer servidor) {	//constructor que inicializa el socket del cliente y hace referencia al servidor TCOMultiServer
     	super("TCPServerHilo");
-        this.socket = socket;
-        this.servidor = servidor;
-        this.personaDAO = servidor.personaDAO;
+        this.socket = socket;                                  //se inicializa el socket del cliente
+        this.servidor = servidor;                              //se inicializa el socket del servidor
+        this.personaDAO = servidor.personaDAO;                 //inicializamos personaDAO para interactuar con la base de datos
         this.username = null; 										// username se inicializa como null para evitar que servidor no lea usuario en cuestion
     }
 
@@ -27,22 +27,25 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
             PrintWriter out = new PrintWriter(socket.getOutputStream(), true);  					//Clase PrintWriter para enviar
             BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream())); //Clase BufferedReader paar recibir
             out.println("Bienvenido!"); 															// Se envia Mesnaje de bienvenida al cliente con out
-            String inputLine, outputLine;
+            String inputLine, outputLine;                     //la cadena inputLine se utiliza para recibir y leer las respuestas del servidor
             
             
             //El login se produce estableciendo el valor de conectado en true, por defecto esta en false
             //Para el logout se establece el valor de conectado en false
             
             while ((inputLine = in.readLine()) != null) {   	//vemos si hay usuarios conectados
+                //Al recibir cadena de cliente, un fragmento de este contiene LOGIN, LOGOUT, SIGNIN, LISTA_USUARIOS O 
+                //TERMINAR PROCESO, por lo que procesa cada alternativa
+
                 if (inputLine.startsWith("LOGIN:")) {			//COMANDO LOGIN
                     String[] partes = inputLine.split(":");
                     username = partes[1];
                     String password = partes[2];
 
                     if (personaDAO.loginUsuario(username, password)) {
-                    	System.out.println("\nUsuario " + username + " conectado");
-                        out.println("Usuario " + username + " conectado.");
-                        servidor.usuarios.add(username);
+                    	System.out.println("\nUsuario " + username + " conectado"); //muestra en pantalla conexion
+                        out.println("Usuario " + username + " conectado.");     //envia la conexion
+                        servidor.usuarios.add(username);                    //agrega a lista usuarios el username del usuario
                         personaDAO.conectarUsuario(username, true); 	// Marca al usuario como conectado
                     } else {
                         out.println("Error al iniciar sesion. No existe el usuario.");
@@ -73,15 +76,17 @@ public class TCPServerHilo extends Thread {	//Extiende Thread para el manejo de 
                     out.println("error");
                 } else if (inputLine.equals("LISTA_USUARIOS")) {
        
-                
+                    //hace la consulta de usuarios con sesion iniciada por medio del metodo listarUsuariosConectados() que esta en PersonaDAO.java
                 	List<String> usuariosConectados = personaDAO.listarUsuariosConectados();
                 	if (usuariosConectados.isEmpty()) {
                         out.println("Usuarios conectados: 0");
                     } else {
-                        out.println("Usuarios conectados: " + String.join(", ", usuariosConectados));
+
+                        //muestra usuarios conectados separados por ,
+                        out.println("Usuarios conectados: " + String.join(", ", usuariosConectados));           
                     }
                 	out.println("error");
-                } else if (inputLine.equals("TERMINAR PROCESO")) {
+                } else if (inputLine.equals("TERMINAR PROCESO")) {     //se agrega funcionalidad para terminar proceso
        
                 	out.println("Proceso terminado");
                 	break;
